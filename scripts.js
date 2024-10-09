@@ -1,7 +1,16 @@
 const myLibrary = [];
 const bookContainer = document.querySelector(".bookContainer");
-const displayBooksButton = document.querySelector("#display");
 
+const displayBooksButton = document.querySelector("#display");
+const addBookButton = document.querySelector("#add");
+const addBookDialogButton = document.querySelector("#addBookDialog");
+
+const cancelDialog = document.querySelector("#cancel");
+const submitDialog = document.querySelector("#submitDialog");
+
+const nameInput = document.querySelector("#bookName");
+const authorInput = document.querySelector("#bookAuthor");
+const pageInput = document.querySelector("#bookPages");
 
 
 function Book(name, author, pages){
@@ -26,14 +35,15 @@ console.log(myLibrary);
 
 function displayBooks(){
     for(let book in myLibrary){
-        alert(book.name);
         const bookCard = document.createElement("div");
+        bookCard.setAttribute("class", "bookCard");
+        // bookCard.setAttribute("id", myLibrary[book].name);
         const bookName = document.createElement("div");
-        bookName.textContent = book.name;
+        bookName.textContent = myLibrary[book].name;
         const bookAuthor = document.createElement("p");
-        bookAuthor.textContent = book.author;
+        bookAuthor.textContent = myLibrary[book].author;
         const bookPages = document.createElement("p");
-        bookPages.textContent = book.pages;
+        bookPages.textContent = "Pages: " + myLibrary[book].pages;
         bookCard.appendChild(bookName);
         bookCard.appendChild(bookAuthor);
         bookCard.appendChild(bookPages);
@@ -43,4 +53,26 @@ function displayBooks(){
 
 displayBooksButton.addEventListener("click", () => {
     displayBooks();
+});
+
+// addBookButton.addEventListener("click", () => {
+//     let nameInput = prompt("Enter a title:");
+//     let authorInput = prompt("Enter an author:");
+//     let pageInput = prompt("Enter a page count:");
+//     const newBook = new Book(nameInput, authorInput, pageInput);
+//     addBookToLibrary(newBook);
+//     console.log(newBook);
+// });
+
+addBookButton.addEventListener("click", () => {
+    addBookDialogButton.showModal();
+});
+
+cancelDialog.addEventListener("click", () => {
+    addBookDialogButton.close();
+});
+
+submitDialog.addEventListener("click", () => {
+
+    addBookDialogButton.close();
 });

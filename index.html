@@ -10,6 +10,27 @@
 </head>
 <body>
     <button id="display">Display Books</button>
+    <button id="add">Add a Book</button>
+    <dialog id="addBookDialog">
+        <form action="#">
+            <div class="entry">
+                <label for="bookName">Book Name:</label>
+                <input type="text" name="bookName" id="bookName" required>
+            </div>
+            <div class="entry">
+                <label for="bookAuthor">Author:</label>
+                <input type="text" name="bookAuthor" id="bookAuthor" required>
+            </div>
+            <div class="entry">
+                <label for="bookPages">Number of Pages:</label>
+                <input type="text" name="bookPages" id="bookPages" required>
+            </div>
+            <div class="closeSubmit">
+                <button id="cancel">Cancel</button>
+                <button id="submitDialog">Submit</button>
+            </div>
+        </form>
+    </dialog>
     <section class="bookContainer"></section>
 </body>
 </html>
