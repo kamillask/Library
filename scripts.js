@@ -4,7 +4,6 @@ const bookContainer = document.querySelector(".bookContainer");
 const displayBooksButton = document.querySelector("#display");
 const addBookButton = document.querySelector("#add");
 const addBookDialogButton = document.querySelector("#addBookDialog");
-const removeBookButton = document.querySelectorAll("#removeButton");
 
 const cancelDialog = document.querySelector("#cancel");
 const submitDialog = document.querySelector("#submitDialog");
@@ -25,6 +24,9 @@ function Book(name, author, pages){
 const harryPotter = new Book("Azkaban", "JK Rowling", 347);
 const help = new Book("Atomic Habits", "Some Guy", 677);
 const whateverBook = new Book("48 Laws of Power", "Another Guy", 1010);
+const harryPotter1 = new Book("Azkaban", "JK Rowling", 347);
+const help1 = new Book("Atomic Habits", "Some Guy", 677);
+const whateverBook1 = new Book("48 Laws of Power", "Another Guy", 1010);
 
 function addBookToLibrary(book){
     myLibrary.push(book);
@@ -33,8 +35,11 @@ function addBookToLibrary(book){
 addBookToLibrary(harryPotter);
 addBookToLibrary(help);
 addBookToLibrary(whateverBook);
+addBookToLibrary(harryPotter1);
+addBookToLibrary(help1);
+addBookToLibrary(whateverBook1);
 
-// console.log(myLibrary);
+console.log(myLibrary);
 
 function displayBooks(){
     for(let book in myLibrary){
@@ -45,9 +50,26 @@ function displayBooks(){
 
         const removeButton = document.createElement("button");
         removeButton.setAttribute("id", "removeButton");
+        removeButton.addEventListener("click", () => {
+            alert("clicked");
+            bookCard.remove();
+        })
+
+        const bookControls = document.createElement("div");
+        bookControls.setAttribute("class", "bookControls");
+
         const removeButtonIcon = document.createElement("img");
         removeButtonIcon.setAttribute("src", "./images/close_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png")
         removeButton.appendChild(removeButtonIcon);
+
+        const markReadButton = document.createElement("button");
+        markReadButton.setAttribute("id", "markRead");
+        const markReadButtonIcon = document.createElement("img");
+        markReadButtonIcon.setAttribute("src", "./images/check_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png");
+        markReadButton.appendChild(markReadButtonIcon);
+
+        bookControls.appendChild(removeButton);
+        bookControls.appendChild(markReadButton);
 
         const bookName = document.createElement("div");
         bookName.textContent = myLibrary[book].name;
@@ -58,16 +80,42 @@ function displayBooks(){
         bookCard.appendChild(bookName);
         bookCard.appendChild(bookAuthor);
         bookCard.appendChild(bookPages);
-        bookCard.appendChild(removeButton);
+
+        bookCard.appendChild(bookControls);
         bookContainer.appendChild(bookCard);
     }
 }
+displayBooks();
 
 function displayBook(book){
     const bookCard = document.createElement("div");
     bookCard.setAttribute("class", "bookCard");
     bookCard.setAttribute("id", index);
     index++;
+
+    const removeButton = document.createElement("button");
+    removeButton.setAttribute("id", "removeButton");
+    removeButton.addEventListener("click", () => {
+        alert("clicked");
+        bookCard.remove();
+    })
+
+    const bookControls = document.createElement("div");
+    bookControls.setAttribute("class", "bookControls");
+
+    const removeButtonIcon = document.createElement("img");
+    removeButtonIcon.setAttribute("src", "./images/close_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png")
+    removeButton.appendChild(removeButtonIcon);
+
+    const markReadButton = document.createElement("button");
+    markReadButton.setAttribute("id", "markRead");
+    const markReadButtonIcon = document.createElement("img");
+    markReadButtonIcon.setAttribute("src", "./images/check_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png");
+    markReadButton.appendChild(markReadButtonIcon);
+
+    bookControls.appendChild(removeButton);
+    bookControls.appendChild(markReadButton);
+
     const bookName = document.createElement("div");
     bookName.textContent = book.name;
     const bookAuthor = document.createElement("p");
@@ -77,6 +125,7 @@ function displayBook(book){
     bookCard.appendChild(bookName);
     bookCard.appendChild(bookAuthor);
     bookCard.appendChild(bookPages);
+    bookCard.appendChild(bookControls);
     bookContainer.appendChild(bookCard);
 }
 
@@ -102,9 +151,6 @@ cancelDialog.addEventListener("click", () => {
 });
 
 submitDialog.addEventListener("click", () => {
-    // alert(nameInput.value);
-    // alert(authorInput.value);
-    // alert(pageInput.value);
     const bookInput = new Book(nameInput.value, authorInput.value, pageInput.value);
     addBookToLibrary(bookInput);
     displayBook(bookInput);
@@ -115,8 +161,8 @@ submitDialog.addEventListener("click", () => {
 
 
 //DOPESNT WORK BECAUSE OF QUERYSELCTORALL, NEED TO ITERATE THROUGH NODELIST
-removeBookButton.addEventListener("click", () => {
-    alert("clicked");
-});
+// removeBookButton.addEventListener("click", () => {
+//     alert("clicked");
+// });
 
-displayBooks();
+
