@@ -1,4 +1,4 @@
-const myLibrary = [];
+let myLibrary = [];
 const bookContainer = document.querySelector(".bookContainer");
 
 const displayBooksButton = document.querySelector("#display");
@@ -12,21 +12,32 @@ let nameInput = document.querySelector("#bookName");
 let authorInput = document.querySelector("#bookAuthor");
 let pageInput = document.querySelector("#bookPages");
 
-let index = 0;
+// let index = 0;
 
 
 function Book(name, author, pages){
     this.name = name;
     this.author = author;
     this.pages = pages;
+    this.read = false;
 }
 
-const harryPotter = new Book("Azkaban", "JK Rowling", 347);
-const help = new Book("Atomic Habits", "Some Guy", 677);
-const whateverBook = new Book("48 Laws of Power", "Another Guy", 1010);
-const harryPotter1 = new Book("Azkaban", "JK Rowling", 347);
-const help1 = new Book("Atomic Habits", "Some Guy", 677);
-const whateverBook1 = new Book("48 Laws of Power", "Another Guy", 1010);
+Book.prototype.isRead = function() {
+    if(this.read===false){
+        this.read = true;
+        return true;
+    } else{
+        this.read = false;
+        return false;
+    }
+}
+
+let harryPotter = new Book("Azkaban", "JK Rowling", 347);
+let help = new Book("Atomic Habits", "Some Guy", 677);
+let whateverBook = new Book("48 Laws of Power", "Another Guy", 1010);
+let harryPotter1 = new Book("Azkaban", "JK Rowling", 347);
+let help1 = new Book("Atomic Habits", "Some Guy", 677);
+let whateverBook1 = new Book("48 Laws of Power", "Another Guy", 1010);
 
 function addBookToLibrary(book){
     myLibrary.push(book);
@@ -45,15 +56,17 @@ function displayBooks(){
     for(let book in myLibrary){
         const bookCard = document.createElement("div");
         bookCard.setAttribute("class", "bookCard");
-        bookCard.setAttribute("id", index);
-        index++;
+        // bookCard.setAttribute("id", index);
+        // index++;
+        bookCard.setAttribute("id", "notRead");
 
         const removeButton = document.createElement("button");
         removeButton.setAttribute("id", "removeButton");
+        removeButton.setAttribute("title", "Remove Book");
+
         removeButton.addEventListener("click", () => {
-            alert("clicked");
             bookCard.remove();
-        })
+        });
 
         const bookControls = document.createElement("div");
         bookControls.setAttribute("class", "bookControls");
@@ -64,9 +77,20 @@ function displayBooks(){
 
         const markReadButton = document.createElement("button");
         markReadButton.setAttribute("id", "markRead");
+        markReadButton.setAttribute("title", "Mark as read");
         const markReadButtonIcon = document.createElement("img");
         markReadButtonIcon.setAttribute("src", "./images/check_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png");
         markReadButton.appendChild(markReadButtonIcon);
+
+        markReadButton.addEventListener("click", () => {
+            myLibrary[book].isRead();
+            console.log(myLibrary[book]);
+            if(myLibrary[book].read===true){
+                bookCard.setAttribute("id", "read");
+            } else{
+                bookCard.setAttribute("id", "notRead");
+            }
+        });
 
         bookControls.appendChild(removeButton);
         bookControls.appendChild(markReadButton);
@@ -90,13 +114,14 @@ displayBooks();
 function displayBook(book){
     const bookCard = document.createElement("div");
     bookCard.setAttribute("class", "bookCard");
-    bookCard.setAttribute("id", index);
-    index++;
+    // bookCard.setAttribute("id", index);
+    // index++;
+    bookCard.setAttribute("id", "notRead");
 
     const removeButton = document.createElement("button");
     removeButton.setAttribute("id", "removeButton");
+    removeButton.setAttribute("title", "Remove Book");
     removeButton.addEventListener("click", () => {
-        alert("clicked");
         bookCard.remove();
     })
 
@@ -109,9 +134,19 @@ function displayBook(book){
 
     const markReadButton = document.createElement("button");
     markReadButton.setAttribute("id", "markRead");
+    markReadButton.setAttribute("title", "Mark as read");
     const markReadButtonIcon = document.createElement("img");
     markReadButtonIcon.setAttribute("src", "./images/check_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png");
     markReadButton.appendChild(markReadButtonIcon);
+
+    markReadButton.addEventListener("click", () => {
+        book.isRead();
+        if(book.read===true){
+            bookCard.setAttribute("id", "read");
+        } else{
+            bookCard.setAttribute("id", "notRead");
+        }
+    });
 
     bookControls.appendChild(removeButton);
     bookControls.appendChild(markReadButton);
@@ -151,12 +186,12 @@ cancelDialog.addEventListener("click", () => {
 });
 
 submitDialog.addEventListener("click", () => {
-    const bookInput = new Book(nameInput.value, authorInput.value, pageInput.value);
+    let bookInput = new Book(nameInput.value, authorInput.value, pageInput.value);
     addBookToLibrary(bookInput);
     displayBook(bookInput);
     console.log(myLibrary);
     addBookDialogButton.close();
-    preventDefault();
+    // preventDefault();
 });
 
 
