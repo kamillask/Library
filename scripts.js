@@ -32,23 +32,23 @@ Book.prototype.isRead = function() {
     }
 }
 
-let harryPotter = new Book("Azkaban", "JK Rowling", 347);
-let help = new Book("Atomic Habits", "Some Guy", 677);
-let whateverBook = new Book("48 Laws of Power", "Another Guy", 1010);
-let harryPotter1 = new Book("Azkaban", "JK Rowling", 347);
-let help1 = new Book("Atomic Habits", "Some Guy", 677);
-let whateverBook1 = new Book("48 Laws of Power", "Another Guy", 1010);
+let donQuixote = new Book("Don Quixote", "Miguel de Cervantes", 863);
+let aTaleofTwoCities = new Book("A Tale of Two Cities", "Charles Dickens", 448);
+let theLordoftheRings = new Book("The Lord of the Rings", "J.R.R. Tolkien", 1178);
+let theLittlePrince = new Book("The Little Prince", "Antoine de Saint-Exupéry", 96);
+let harryPotterandthePhilosophersStone = new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", 223);
+let theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", 310);
 
 function addBookToLibrary(book){
     myLibrary.push(book);
 }
 
-addBookToLibrary(harryPotter);
-addBookToLibrary(help);
-addBookToLibrary(whateverBook);
-addBookToLibrary(harryPotter1);
-addBookToLibrary(help1);
-addBookToLibrary(whateverBook1);
+addBookToLibrary(donQuixote);
+addBookToLibrary(aTaleofTwoCities);
+addBookToLibrary(theLordoftheRings);
+addBookToLibrary(theLittlePrince);
+addBookToLibrary(harryPotterandthePhilosophersStone);
+addBookToLibrary(theHobbit);
 
 console.log(myLibrary);
 
@@ -72,7 +72,7 @@ function displayBooks(){
         bookControls.setAttribute("class", "bookControls");
 
         const removeButtonIcon = document.createElement("img");
-        removeButtonIcon.setAttribute("src", "./images/close_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png")
+        removeButtonIcon.setAttribute("src", "./images/delete_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png")
         removeButton.appendChild(removeButtonIcon);
 
         const markReadButton = document.createElement("button");
@@ -129,7 +129,7 @@ function displayBook(book){
     bookControls.setAttribute("class", "bookControls");
 
     const removeButtonIcon = document.createElement("img");
-    removeButtonIcon.setAttribute("src", "./images/close_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png")
+    removeButtonIcon.setAttribute("src", "./images/delete_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png")
     removeButton.appendChild(removeButtonIcon);
 
     const markReadButton = document.createElement("button");
@@ -164,40 +164,34 @@ function displayBook(book){
     bookContainer.appendChild(bookCard);
 }
 
-// displayBooksButton.addEventListener("click", () => {
-//     displayBooks();
-// });
-
-// addBookButton.addEventListener("click", () => {
-//     let nameInput = prompt("Enter a title:");
-//     let authorInput = prompt("Enter an author:");
-//     let pageInput = prompt("Enter a page count:");
-//     const newBook = new Book(nameInput, authorInput, pageInput);
-//     addBookToLibrary(newBook);
-//     console.log(newBook);
-// });
+function clearValues(){
+    nameInput.value = "";
+    authorInput.value = "";
+    pageInput.value = "";
+}
 
 addBookButton.addEventListener("click", () => {
     addBookDialogButton.showModal();
 });
 
 cancelDialog.addEventListener("click", () => {
+    clearValues();
     addBookDialogButton.close();
 });
 
 submitDialog.addEventListener("click", () => {
-    let bookInput = new Book(nameInput.value, authorInput.value, pageInput.value);
-    addBookToLibrary(bookInput);
-    displayBook(bookInput);
-    console.log(myLibrary);
-    addBookDialogButton.close();
+    if(nameInput.value!="" && authorInput.value!="" && pageInput.value!=""){
+        let bookInput = new Book(nameInput.value, authorInput.value, pageInput.value);
+        addBookToLibrary(bookInput);
+        displayBook(bookInput);
+        console.log(myLibrary);
+        clearValues();
+        addBookDialogButton.close();
+    } else{
+        alert("Please fill in the required fields.");
+    }
+    
     // preventDefault();
 });
-
-
-//DOPESNT WORK BECAUSE OF QUERYSELCTORALL, NEED TO ITERATE THROUGH NODELIST
-// removeBookButton.addEventListener("click", () => {
-//     alert("clicked");
-// });
 
 
