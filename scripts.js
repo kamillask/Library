@@ -12,25 +12,34 @@ let nameInput = document.querySelector("#bookName");
 let authorInput = document.querySelector("#bookAuthor");
 let pageInput = document.querySelector("#bookPages");
 
-// let index = 0;
 
+class Book{
+    constructor(name, author, pages){
+        this.name = name;
+        this.author = author;
+        this.pages = pages;
+        this._read = false;
+    }
 
-function Book(name, author, pages){
-    this.name = name;
-    this.author = author;
-    this.pages = pages;
-    this.read = false;
-}
+    get read() {
+        return this._read;
+    }
 
-Book.prototype.isRead = function() {
-    if(this.read===false){
-        this.read = true;
-        return true;
-    } else{
-        this.read = false;
-        return false;
+    set read(readTF) {
+        this._read = readTF;
+    }
+
+    changeReadStatus() {
+        if(this._read===false){
+            this._read = true;
+            return true;
+        } else{
+            this._read = false;
+            return false;
+        }
     }
 }
+
 
 let donQuixote = new Book("Don Quixote", "Miguel de Cervantes", 863);
 let aTaleofTwoCities = new Book("A Tale of Two Cities", "Charles Dickens", 448);
@@ -43,6 +52,10 @@ function addBookToLibrary(book){
     myLibrary.push(book);
 }
 
+function removeFromLibrary(book){
+    myLibrary.splice(myLibrary.indexOf(book),1);
+}
+
 addBookToLibrary(donQuixote);
 addBookToLibrary(aTaleofTwoCities);
 addBookToLibrary(theLordoftheRings);
@@ -50,15 +63,19 @@ addBookToLibrary(theLittlePrince);
 addBookToLibrary(harryPotterandthePhilosophersStone);
 addBookToLibrary(theHobbit);
 
-console.log(myLibrary);
-
 function displayBooks(){
+    while(bookContainer.firstChild){
+        bookContainer.removeChild(bookContainer.firstChild);
+    }
     for(let book in myLibrary){
         const bookCard = document.createElement("div");
         bookCard.setAttribute("class", "bookCard");
-        // bookCard.setAttribute("id", index);
-        // index++;
-        bookCard.setAttribute("id", "notRead");
+        if(myLibrary[book].read===false){
+            bookCard.setAttribute("id", "notRead");
+        } else{
+            bookCard.setAttribute("id", "read");
+        }
+        
 
         const removeButton = document.createElement("button");
         removeButton.setAttribute("id", "removeButton");
@@ -66,6 +83,8 @@ function displayBooks(){
 
         removeButton.addEventListener("click", () => {
             bookCard.remove();
+            removeFromLibrary(myLibrary[book]);
+            console.log(myLibrary);
         });
 
         const bookControls = document.createElement("div");
@@ -83,8 +102,7 @@ function displayBooks(){
         markReadButton.appendChild(markReadButtonIcon);
 
         markReadButton.addEventListener("click", () => {
-            myLibrary[book].isRead();
-            console.log(myLibrary[book]);
+            myLibrary[book].changeReadStatus();
             if(myLibrary[book].read===true){
                 bookCard.setAttribute("id", "read");
             } else{
@@ -111,58 +129,58 @@ function displayBooks(){
 }
 displayBooks();
 
-function displayBook(book){
-    const bookCard = document.createElement("div");
-    bookCard.setAttribute("class", "bookCard");
-    // bookCard.setAttribute("id", index);
-    // index++;
-    bookCard.setAttribute("id", "notRead");
 
-    const removeButton = document.createElement("button");
-    removeButton.setAttribute("id", "removeButton");
-    removeButton.setAttribute("title", "Remove Book");
-    removeButton.addEventListener("click", () => {
-        bookCard.remove();
-    })
+//instead of this, make displayBooks clear current bookContainer, and refresh upon submit on new book
+// function displayBook(book){
+//     const bookCard = document.createElement("div");
+//     bookCard.setAttribute("class", "bookCard");
+//     bookCard.setAttribute("id", "notRead");
 
-    const bookControls = document.createElement("div");
-    bookControls.setAttribute("class", "bookControls");
+//     const removeButton = document.createElement("button");
+//     removeButton.setAttribute("id", "removeButton");
+//     removeButton.setAttribute("title", "Remove Book");
+//     removeButton.addEventListener("click", () => {
+//         bookCard.remove();
+//     })
 
-    const removeButtonIcon = document.createElement("img");
-    removeButtonIcon.setAttribute("src", "./images/delete_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png")
-    removeButton.appendChild(removeButtonIcon);
+//     const bookControls = document.createElement("div");
+//     bookControls.setAttribute("class", "bookControls");
 
-    const markReadButton = document.createElement("button");
-    markReadButton.setAttribute("id", "markRead");
-    markReadButton.setAttribute("title", "Mark as read");
-    const markReadButtonIcon = document.createElement("img");
-    markReadButtonIcon.setAttribute("src", "./images/check_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png");
-    markReadButton.appendChild(markReadButtonIcon);
+//     const removeButtonIcon = document.createElement("img");
+//     removeButtonIcon.setAttribute("src", "./images/delete_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png")
+//     removeButton.appendChild(removeButtonIcon);
 
-    markReadButton.addEventListener("click", () => {
-        book.isRead();
-        if(book.read===true){
-            bookCard.setAttribute("id", "read");
-        } else{
-            bookCard.setAttribute("id", "notRead");
-        }
-    });
+//     const markReadButton = document.createElement("button");
+//     markReadButton.setAttribute("id", "markRead");
+//     markReadButton.setAttribute("title", "Mark as read");
+//     const markReadButtonIcon = document.createElement("img");
+//     markReadButtonIcon.setAttribute("src", "./images/check_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png");
+//     markReadButton.appendChild(markReadButtonIcon);
 
-    bookControls.appendChild(removeButton);
-    bookControls.appendChild(markReadButton);
+//     markReadButton.addEventListener("click", () => {
+//         book.isRead();
+//         if(book.read===true){
+//             bookCard.setAttribute("id", "read");
+//         } else{
+//             bookCard.setAttribute("id", "notRead");
+//         }
+//     });
 
-    const bookName = document.createElement("div");
-    bookName.textContent = book.name;
-    const bookAuthor = document.createElement("p");
-    bookAuthor.textContent = book.author;
-    const bookPages = document.createElement("p");
-    bookPages.textContent = "Pages: " + book.pages;
-    bookCard.appendChild(bookName);
-    bookCard.appendChild(bookAuthor);
-    bookCard.appendChild(bookPages);
-    bookCard.appendChild(bookControls);
-    bookContainer.appendChild(bookCard);
-}
+//     bookControls.appendChild(removeButton);
+//     bookControls.appendChild(markReadButton);
+
+//     const bookName = document.createElement("div");
+//     bookName.textContent = book.name;
+//     const bookAuthor = document.createElement("p");
+//     bookAuthor.textContent = book.author;
+//     const bookPages = document.createElement("p");
+//     bookPages.textContent = "Pages: " + book.pages;
+//     bookCard.appendChild(bookName);
+//     bookCard.appendChild(bookAuthor);
+//     bookCard.appendChild(bookPages);
+//     bookCard.appendChild(bookControls);
+//     bookContainer.appendChild(bookCard);
+// }
 
 function clearValues(){
     nameInput.value = "";
@@ -183,15 +201,13 @@ submitDialog.addEventListener("click", () => {
     if(nameInput.value!="" && authorInput.value!="" && pageInput.value!=""){
         let bookInput = new Book(nameInput.value, authorInput.value, pageInput.value);
         addBookToLibrary(bookInput);
-        displayBook(bookInput);
+        displayBooks();
         console.log(myLibrary);
         clearValues();
         addBookDialogButton.close();
     } else{
         alert("Please fill in the required fields.");
     }
-    
-    // preventDefault();
 });
 
 
